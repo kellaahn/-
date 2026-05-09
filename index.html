@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>proto w2 - Responsive</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@700&display=swap" rel="stylesheet">
     <style>
         
          #intro-screen {
@@ -26,7 +26,7 @@
 .content-wrapper {
     text-align: center;
     /* ↓ 제목과 버튼을 통째로 위아래로 움직이고 싶을 때 이 값을 조절하세요 */
-    margin-top: 0vh; 
+    margin-top: 36vh;
 }
 
 .main-title {
@@ -35,40 +35,62 @@
     /* ↓ 글자 크기 조절 (화면 너비의 8%) */
     font-size: 8vw; 
     line-height: 0.8;
-    margin-bottom: 30px; /* 제목과 버튼 사이 간격 */
+    margin-top: 120px;
+    margin-bottom: 30px;
 }
 
 #start-button {
-    background: white;
-    color: black;
+    background: rgba(255, 255, 255, 0);
+    color: rgb(0, 0, 0);
     border: none;
     cursor: pointer;
     border-radius: 100px;
-    font-family: 'DM Serif Display', serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;  /* ← 이것만 바꿈 */
     font-weight: bold;
-     opacity: 0.8;
-    /* ↓ 버튼 안의 여백 (상하 15px, 좌우 40px) */
+    opacity: 0.8;
     padding: 45px 100px;
-    
-    /* ↓ 버튼 글자 크기 (너무 크면 여기서 줄이세요) */
-    font-size: 240px; 
-    
-    /* ↓ 버튼에 마우스를 올렸을 때 살짝 흐려지는 효과 */
+    font-size: 240px;
     transition: opacity 0.3s;
 }
 
 #start-button:hover {
     opacity: 0.8;
 }
+
+#restart-button {
+    display: none;
+    position: fixed;
+    bottom: 48px;
+    right: 60px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: bold;
+    font-size: 180px;
+    color: rgb(4, 0, 0);
+    opacity: 0.6;
+    z-index: 200;
+    transition: opacity 0.2s;
+}
+
+#restart-button:hover {
+    opacity: 1;
+}
 </style>
    
 </head>
 <body>
     
+    <button id="restart-button">Restart</button>
+
     <div id="intro-screen">
     <div class="content-wrapper"> 
-        <h1 class="main-title"> Musical<br> Matryoshka</h1>
-        <button id="start-button">Open the Doll</button>
+        
+        
+        
+        <button id="start-button">Click to Open</button>
+        <h1 class="main-title"> Musical Matryoshka </h1>
     </div>
 </div>
 
