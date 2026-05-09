@@ -3,53 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>proto w2</title>
+    <title>proto w2 - Responsive</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=DM+Serif+Display:ital@0;1&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet">
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden; 
-        }
-       
-        canvas {
-            display: block;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -1; 
-        }
         
-        .content-overlay {
-            position: relative;
-            z-index: 1; 
-            color: white; 
-            padding: 20px;
-            text-align: center;
-        }
+         #intro-screen {
+             position: fixed;
+             top: 0;
+             left: 0;
+             width: 100%;
+             height: 100%;
+             display: flex;
+             flex-direction: column;
+             justify-content: center; /* 세로 중앙 정렬 */
+             align-items: center;     /* 가로 중앙 정렬 */
+             z-index: 100;
+             background: transparent; /* 배경은 p5.js가 보여야 하므로 투명하게 */
+             }
+
+.content-wrapper {
+    text-align: center;
+    /* ↓ 제목과 버튼을 통째로 위아래로 움직이고 싶을 때 이 값을 조절하세요 */
+    margin-top: 0vh; 
+}
+
+.main-title {
+    color: white;
+    font-family: 'DM Serif Display', serif;
+    /* ↓ 글자 크기 조절 (화면 너비의 8%) */
+    font-size: 9vw; 
+    margin-bottom: 30px; /* 제목과 버튼 사이 간격 */
+}
+
+#start-button {
+    background: white;
+    color: black;
+    border: none;
+    cursor: pointer;
+    border-radius: 100px;
+    font-family: 'DM Serif Display', serif;
+    font-weight: bold;
+     opacity: 0.8;
+    /* ↓ 버튼 안의 여백 (상하 15px, 좌우 40px) */
+    padding: 45px 100px;
     
-        body {
-      font-family: "DM Serif Display", serif;
+    /* ↓ 버튼 글자 크기 (너무 크면 여기서 줄이세요) */
+    font-size: 240px; 
     
-    }
+    /* ↓ 버튼에 마우스를 올렸을 때 살짝 흐려지는 효과 */
+    transition: opacity 0.3s;
+}
 
-    </style>
-
-
-
+#start-button:hover {
+    opacity: 0.8;
+}
+</style>
+   
 </head>
 <body>
+    
+    <div id="intro-screen">
+    <div class="content-wrapper"> 
+        <h1 class="main-title"><br>Musical</br> Matryoshka</h1>
+        <button id="start-button">Open the Doll</button>
+    </div>
+</div>
+
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.1/p5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.1/addons/p5.sound.min.js"></script>
-
-    <h1 style="color: white; font-size: 50px; position: absolute; top: 83%; left: 50%; transform: translate(-50%, -50%);">
-    Click to open Matryoshka</h1>
-    
-  
-   
-    <script src="dot.js"></script>
     <script src="sketch.js"></script>
 </body>
 </html>
