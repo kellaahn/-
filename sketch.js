@@ -45,6 +45,15 @@ let soundLoaded = false;
 //초기화면 넘어올때
 let gameState = "INTRO";
 let isChangingState = false;
+
+let introOffset = 0;
+let introStarted = false;
+
+let introImgX = 0;
+let introImgVelocity = -25;
+let introImgGravity = 0.8;
+
+
 //배경이미지 
 let bg;
 let matryoImg;
@@ -70,12 +79,11 @@ function setup() {
 
   let startBtn = select('#start-button');
   startBtn.mousePressed(() => {
-      isChangingState = true;
-      select('#intro-screen').hide();
-      gameState = "PLAY";
+      introStarted = true; 
+      introImgVelocity = -25;
       userStartAudio();
 
-      setTimeout(() => {isChangingState = false;}, 200);
+    
   });
 
   cols = (width - margin * 2) / size;
@@ -184,24 +192,48 @@ function draw() {
 
  
  
-  imageMode(CENTER);
-  tint(255, 20);
-  image(matryoImg,  windowWidth/2  , windowHeight/2  , 2800, 4300 ); 
-  tint(255, 30);
-  image(matryoImg,  windowWidth/2  , windowHeight/2  , 2600, 4100 ); 
-  tint(255, 40);
-  image(matryoImg,  windowWidth/2  , windowHeight/2  , 2400, 3900 );  
-  tint(255, 60);
-  image(matryoImg,  windowWidth/2  , windowHeight/2  , 2200, 3700 );  
-  tint(255, 70);
-  image(matryoImg,  windowWidth/2  , windowHeight/2  , 1900, 3400 );  
-  tint(255, 80);
-  image(matryoImg,  windowWidth/2  , windowHeight/2  , 1600, 2800 );  
-  tint(255, 150);
-  image(matryoImg,  windowWidth/2  , windowHeight/2  , 1200, 2000 );  
- 
-  tint(255, 255);
-  image(matryoImg,  windowWidth/2  , windowHeight/2  , 900, 1500 );  
+  if (introStarted) {
+  introImgVelocity += introImgGravity;
+  introImgX += 12;
+  introOffset += introImgVelocity;
+
+if (introOffset > 200) {
+    introOffset = 200;
+    introImgVelocity *= -0.6;
+  }
+}
+
+if (introImgX > windowWidth) {
+  select('#intro-screen').hide();
+  gameState = "PLAY";
+}
+
+
+imageMode(CENTER);
+tint(255, 20);
+image(matryoImg, windowWidth/2 , windowHeight/2, 2800, 4300);  // 가장 바깥 → 느리게
+
+tint(255, 30);
+image(matryoImg, windowWidth/2 , windowHeight/2, 2600, 4100);
+
+tint(255, 40);
+image(matryoImg, windowWidth/2 , windowHeight/2, 2400, 3900);
+
+tint(255, 60);
+image(matryoImg, windowWidth/2 , windowHeight/2, 2200, 3700);
+
+tint(255, 70);
+image(matryoImg, windowWidth/2 , windowHeight/2, 1900, 3400);
+
+tint(255, 80);
+image(matryoImg, windowWidth/2 , windowHeight/2, 1600, 2800);
+
+tint(255, 150);
+image(matryoImg, windowWidth/2 , windowHeight/2, 1200, 2000);
+
+tint(255, 255);
+image(matryoImg, windowWidth/2 + introImgX, windowHeight/2 + introOffset, 900, 1500);
+noTint();
     
     
  
@@ -268,7 +300,7 @@ RrevealAlpha = constrain(RrevealAlpha, 0, 105);
  //중간 가리개 
   rectMode(CENTER);
   fill(10);
-  //rect(width/2 - 240, height/2, 80, 950);
+  rect(width/2 - 240, height/2, 80, 950);
 
   rectMode(CENTER);
   fill(10);
@@ -298,7 +330,7 @@ fill(10, 255 - RrevealAlpha);
 rect(width/2, height/2, windowWidth/2 + 400, windowHeight);  // 네번째
 
 fill(10, 255);
-rect(width/2, height/2, windowWidth/2 + 120, windowHeight);  // 네번째
+rect(width/2, height/2, windowWidth/2 + 120, windowHeight );  // 네번째
 
 //----------------------------------------------------------------------------------------------------------  
 
