@@ -107,6 +107,7 @@ function setup() {
       userStartAudio();
       song0 = loadSound('Track0.mp3', () => { song0.play(); song0.setVolume(1); });
     }
+    return false;
   });
 
   let restartBtn = select('#restart-button');
@@ -141,30 +142,40 @@ class Dot {
 }
 
 function mousePressed() {
-  if (gameState === "INTRO" || isChangingState) return;
+  if (isChangingState) return;
+
+  if (gameState === "INTRO") {
+    if (!introStarted) {
+      introStarted = true;
+      introImgVelocity = -25;
+      userStartAudio();
+      song0 = loadSound('Track0.mp3', () => { song0.play(); song0.setVolume(1); });
+    }
+    return;
+  }
 
   if (gameState === "PLAY") {
     clickCount++;
     song0 = loadSound('Track0.mp3', () => { song0.play(); song0.setVolume(1); });
 
-    if (QyOffset >= -20 && QyOffset <= 200) {
+    if (QyOffset >= -400 && QyOffset <= 200) {
       Qvelocity = QjumpForce;
-      QxOffset += QjumpDist;  
+      QxOffset += QjumpDist;
       QStarted = true;
     }
-    if (WyOffset >= -20 && WyOffset <= 200 && QjumpDist === 0) {
+    if (WyOffset >= -400 && WyOffset <= 200 && QjumpDist === 0) {
       Wvelocity = WjumpForce;
-      WxOffset += WjumpDist;    
-      WStarted = true;  
+      WxOffset += WjumpDist;
+      WStarted = true;
     }
-    if (EyOffset >= -20 && EyOffset <= 200 && WjumpDist === 0) {
+    if (EyOffset >= -400 && EyOffset <= 200 && WjumpDist === 0) {
       Evelocity = EjumpForce;
-      ExOffset += EjumpDist; 
+      ExOffset += EjumpDist;
       EStarted = true;
     }
-    if (RyOffset >= -20 && RyOffset <= 200 && EjumpDist === 0) {
+    if (RyOffset >= -400 && RyOffset <= 200 && EjumpDist === 0) {
       Rvelocity = RjumpForce;
-      RxOffset += RjumpDist; 
+      RxOffset += RjumpDist;
       RStarted = true;
     }
   }
@@ -205,7 +216,7 @@ function draw() {
 
     if (introStarted) {
       introImgVelocity += introImgGravity;
-      introImgX += 12;
+      introImgX += 40;
       introOffset += introImgVelocity;
       if (introOffset > 200) {
         introOffset = 200;
