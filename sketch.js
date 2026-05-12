@@ -67,14 +67,14 @@ let RrevealAlpha = 0;
 let waveStrength = 0;
 
 
-const BG_R = 242, BG_G = 234, BG_B = 230;
+const BG_R = 247, BG_G = 246, BG_B = 242;
 
 
 
-const C1 = [238, 229, 194]; // 크림 
-const C2 = [211, 220, 124]; // 라임
-const C3 = [142, 189, 157]; // 세이지
-const C4 = [27,  71,  93];  // 네이비 
+const C1 = [219, 182, 238]; // #dbb6ee
+const C2 = [181, 126, 220]; // #b57edc
+const C3 = [127,  76, 165]; // #7f4ca5
+const C4 = [75,   28, 113]; // #4b1c71
 const CW = [255, 255, 255]; // 흰색 
 
 
@@ -237,17 +237,18 @@ function draw() {
     tint(BG_R, BG_G, BG_B, 255);
     //image(matryoImg, windowWidth/2, windowHeight/2, 900 * 4.5, 1500 * 3.4);
 
+    let it = frameCount * 0.018;
     tint(C4[0], C4[1], C4[2], 255);
-    image(matryoImg, windowWidth/2, windowHeight/2, 1900, 2200);
+    image(matryoImg, windowWidth/2 + sin(it) * 18, windowHeight/2 + sin(it * 0.9) * 35, 1900, 2200);
 
     tint(C3[0], C3[1], C3[2], 255);
-    image(matryoImg, windowWidth/2, windowHeight/2, 1650, 2100);
+    image(matryoImg, windowWidth/2 + sin(it + 0.4) * 22, windowHeight/2 + sin(it * 0.9 + 0.4) * 42, 1650, 2100);
 
     tint(C2[0], C2[1], C2[2], 255);
-    image(matryoImg, windowWidth/2, windowHeight/2, 1450, 1950);
+    image(matryoImg, windowWidth/2 + sin(it + 0.8) * 26, windowHeight/2 + sin(it * 0.9 + 0.8) * 50, 1450, 1950);
 
     tint(C1[0], C1[1], C1[2], 255);
-    image(matryoImg, windowWidth/2, windowHeight/2, 1200, 1750);
+    image(matryoImg, windowWidth/2 + sin(it + 1.2) * 30, windowHeight/2 + sin(it * 0.9 + 1.2) * 58, 1200, 1750);
     noTint();
 
     tint(CW[0], CW[1], CW[2], 255);
@@ -281,27 +282,37 @@ function draw() {
     else if (WjumpDist === 0 && WStarted) { dotR = C2[0]; dotG = C2[1]; dotB = C2[2]; }
     else if (QjumpDist === 0 && QStarted) { dotR = C1[0]; dotG = C1[1]; dotB = C1[2]; }
 
-    // 파도 강도 
-    if (RjumpDist === 0 && RStarted) {
-      waveStrength = min(waveStrength + 0.015, 1);
+    // 파도 강도
+    let waveTarget = 0;
+    if (QjumpDist === 0 && QStarted) waveTarget = 0.25;
+    if (WjumpDist === 0 && WStarted) waveTarget = 0.5;
+    if (EjumpDist === 0 && EStarted) waveTarget = 0.75;
+    if (RjumpDist === 0 && RStarted) waveTarget = 1.0;
+    if (waveStrength < waveTarget) {
+      waveStrength = min(waveStrength + 0.015, waveTarget);
     }
 
   
+    let dotSpacing, dotDiam;
+    if      (RjumpDist === 0 && RStarted) { dotSpacing = 90;  dotDiam = 70; }
+    else if (EjumpDist === 0 && EStarted) { dotSpacing = 110; dotDiam = 50; }
+    else if (WjumpDist === 0 && WStarted) { dotSpacing = 130; dotDiam = 30; }
+    else                                   { dotSpacing = 150; dotDiam = 28; }
+
     noStroke();
     let t = frameCount * 0.03;
-    for (let i = 0; i < cols; i++) {
-      for (let j = 0; j < rows; j++) {
-        dots[i][j].update();
+    for (let x = margin; x < width - margin; x += dotSpacing) {
+      for (let y = margin; y < height - margin; y += dotSpacing) {
         fill(dotR, dotG, dotB);
-        let px = dots[i][j].pos.x;
-        let py = dots[i][j].pos.y;
+        let px = x;
+        let py = y;
         if (waveStrength > 0) {
           let dx = sin(py * 0.018 + t) * 18 * waveStrength;
           let dy = sin(px * 0.018 + t) * 18 * waveStrength;
           px += dx;
           py += dy;
         }
-        ellipse(px, py, 30, 30);
+        ellipse(px, py, dotDiam, dotDiam);
       }
     }
 
@@ -311,7 +322,7 @@ function draw() {
     ErevealAlpha = constrain(map(ExOffset, 0, -2100, 0, 135), 0, 135);
     RrevealAlpha = constrain(map(RxOffset, 0, -1500, 0, 105), 0, 105);
 
-    // 가리개 
+    // 가리개
     rectMode(CENTER);
     fill(BG_R, BG_G, BG_B);
     rect(width/2 - 240, height/2, 80, 950);
@@ -496,19 +507,17 @@ function draw() {
 
     pop();
 
-    // 2번째 갔을때 텍스트
-    if (clickCount === 0) {
-      let textPulse = 1 + 0.06 * sin(frameCount * 0.05);
-      noStroke();
-      fill(BG_R - 40, BG_G - 40, BG_B - 40);
-      textFont('Plus Jakarta Sans');
-      textSize(180 * textPulse);
-      textAlign(CENTER, BOTTOM);
-      text('Click to Open', windowWidth / 2, windowHeight/2);
-    }
+    let textFloat = sin(frameCount * 0.04) * 10;
+    let textPulse = 1 + 0.04 * sin(frameCount * 0.04);
+    noStroke();
+    fill(BG_R - 60, BG_G - 60, BG_B - 60);
+    textFont('Plus Jakarta Sans');
+    textSize(140 * textPulse);
+    textAlign(CENTER, CENTER);
+    text('Click to Open', windowWidth / 2, windowHeight - 300 + textFloat);
+
   }
 }
-
 
 
 
